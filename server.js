@@ -36,7 +36,12 @@ app.get("/user", async (req, res) => {
 
 app.get("/gendered-users", async (req, res) => {
   const client = new MongoClient(uri);
+
   const gender = req.query.gender;
+  if (gender === "everyone") {
+    gender = "male" || "female" || "other";
+  }
+  
   try {
     await client.connect();
     const database = client.db("app-data");
