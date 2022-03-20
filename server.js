@@ -43,14 +43,9 @@ app.get("/gendered-users", async (req, res) => {
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
-    if (gender === "everyone") {
-      const filteredUsers = await users.find().toArray;
-      res.send(filteredUsers);
-    } else {
-      const query = { gender_identity: gender};
-      const filteredUsers = await users.find(query).toArray();
-      res.send(filteredUsers);
-    }
+    const query = { gender_identity: gender};
+    const filteredUsers = await users.find(query).toArray();
+    res.send(filteredUsers);
   } finally {
     await client.close();
   }
