@@ -38,18 +38,19 @@ app.get("/gendered-users", async (req, res) => {
   const client = new MongoClient(uri);
 
   const gender = req.query.gender;
-  if (gender === "everyone") {
-    gender = "male" || "female" || "other";
-  }
   
   try {
     await client.connect();
     const database = client.db("app-data");
     const users = database.collection("users");
-    const query = { gender_identity: gender};
-    const filteredUsers = await users.find(query).toArray();
-
-    res.send(filteredUsers);
+    if (gender === "everyone") {
+      const filteredUsers = await users.find().toArray;
+      res.send(filteredUsers);
+    } else {
+      const query = { gender_identity: gender};
+      const filteredUsers = await users.find(query).toArray();
+      res.send(filteredUsers);
+    }
   } finally {
     await client.close();
   }
