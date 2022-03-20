@@ -12,6 +12,10 @@ const uri = process.env.URI;
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.json("Hello!")
+})
   
 app.get("/user", async (req, res) => {
   const client = new MongoClient(uri);
